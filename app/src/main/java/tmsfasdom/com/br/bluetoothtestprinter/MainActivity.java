@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mainBtn.setEnabled(false);
-                IntentPrint(ImpressaoBO.obterRegua());
+                IntentPrint(ImpressaoBO.obterRequisicaoPericialLesao(null, null, null, null, null, null, null, null));
                 mainBtn.setEnabled(true);
             }
         });
