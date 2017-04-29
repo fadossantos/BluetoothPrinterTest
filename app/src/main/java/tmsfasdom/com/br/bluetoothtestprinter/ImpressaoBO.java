@@ -1,8 +1,9 @@
 package tmsfasdom.com.br.bluetoothtestprinter;
 
-/**
- * Created by 22471279830 on 20/04/2017.
- */
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+
 
 public class ImpressaoBO {
     private static String logoSSP = new String("^XA^MNN^JUS^FO20,20^GFA,6345,6345,27,"
@@ -241,32 +242,38 @@ public class ImpressaoBO {
             + "000000000000001FF80000000000000000001FF000000000000000\r\n"
             + "000000000000001F8000000000000000000003F000000000000000\r\n"
             + "000000000000001800000000000000000000003000000000000000\r\n"
-            + "^FO235,70^A0,N,25,24^FDSECRETARIA DE ESTADO DOS NEGOCIOS DA SEGURANCA PUBLICA"
-            + "^FO235, 120^A0,N,25,24^FDPOLICIA MILITAR DO ESTADO DE SAO PAULO"
-            + "^FO235, 170^A0,N,25,24^FDTERMO CIRCUNSTANCIADO DE OCORRENCIA");
+            + "\r\n^FO235,70^A0,N,25,24^FDSECRETARIA DE ESTADO DOS NEGOCIOS DA SEGURANCA PUBLICA"
+            + "\r\n^FO235, 120^A0,N,25,24^FDPOLICIA MILITAR DO ESTADO DE SAO PAULO"
+            + "\r\n^FO235, 170^A0,N,25,24^FDTERMO CIRCUNSTANCIADO DE OCORRENCIA");
 
 
     public static byte[] obterTermoCompromisso(String ocrnum, String ocrdat, String autor, String autoridadePM, String nomeMunicipio, String enderecoForum, String dataMarcada) {
         String retorno = null;
         StringBuilder messageString1 = new StringBuilder();
         messageString1.append(logoSSP);
-        messageString1.append("^FO235, 220^A0,N,25,24^FDOCORRENCIA NR:").append(ocrnum).append(" - DATA: ").append(ocrdat);
-        messageString1.append("^FO150, 350^A0,N,50,40^FDTERMO DE COMPROMISSO DO AUTOR");
-        messageString1.append("^FO20,480^FB795,50,1,J,1^A0,N,35,30^FDComprometo-me a comparecer no local indicado, a fim de participar de audiencia preliminar sobre fato constante do Termo Circunstanciado, acima descrito. Estou ciente de que a concordancia em comparecer ao JECRIM acompanhado ou nao de advogado, nao implica em confissao de qualquer natureza ou admissao de culpa. Estou ciente de que o nao comparecimento implicara em sancoes legais. Comprometo-me ainda a comunicar, de imediato, ao respectivo Forum, qualquer mudanca de endereco. Fui notificado a comparecer no Forum da Comarca de " + nomeMunicipio + ", com endereco a " + enderecoForum + ", na Secretaria do Juizado Especial Criminal ");
+        messageString1.append("\r\n^FO235, 220^A0,N,25,24^FDOCORRENCIA NR:").append(ocrnum).append(" - DATA: ").append(ocrdat);
+        messageString1.append("\r\n^FO150, 350^A0,N,50,40^FDTERMO DE COMPROMISSO DO AUTOR");
+        messageString1.append("\r\n^FO20,480^FB795,50,1,J,1^A0,N,35,30^FDComprometo-me a comparecer no local indicado, " +
+                "\r\na fim de participar de audiencia preliminar sobre fato constante do Termo Circunstanciado, " +
+                "\r\nacima descrito. Estou ciente de que a concordancia em comparecer ao JECRIM acompanhado ou nao " +
+                "\r\nde advogado, nao implica em confissao de qualquer natureza ou admissao de culpa. Estou ciente de " +
+                "\r\nque o nao comparecimento implicara em sancoes legais. Comprometo-me ainda a comunicar, de imediato, " +
+                "\r\nao respectivo Forum, qualquer mudanca de endereco. Fui notificado a comparecer no Forum da Comarca de " + 
+                nomeMunicipio + ", \r\ncom endereco a " + enderecoForum + ", na Secretaria do Juizado Especial Criminal ");
         if (dataMarcada != null) {
             messageString1.append("na seguinte data: " + dataMarcada);
         } else {
             messageString1.append("quando intimado pela Secretaria do JECrim.");
         }
-        messageString1.append("^FO20,920^A0,N,25,20^FDAUTOR:");
-        messageString1.append("^FO160,960^A0,N,35,30^FD____________________________________________");
-        messageString1.append("^FO190,1010^A0,N,35,30^FD").append(autor);
-        messageString1.append("^FO20,1060^A0,N,25,20^FDAUTORIDADE PM:");
-        messageString1.append("^FO160,1100^A0,N,35,30^FD____________________________________________");
-        messageString1.append("^FO190,1160^A0,N,35,30^FD").append(autoridadePM);
+        messageString1.append("\r\n^FO20,920^A0,N,25,20^FDAUTOR:");
+        messageString1.append("\r\n^FO160,960^A0,N,35,30^FD____________________________________________");
+        messageString1.append("\r\n^FO190,1010^A0,N,35,30^FD").append(autor);
+        messageString1.append("\r\n^FO20,1060^A0,N,25,20^FDAUTORIDADE PM:");
+        messageString1.append("\r\n^FO160,1100^A0,N,35,30^FD____________________________________________");
+        messageString1.append("\r\n^FO190,1160^A0,N,35,30^FD").append(autoridadePM);
         messageString1.append("^XZ");
         retorno = messageString1.toString();
-        return retorno.getBytes();
+        return retorno.getBytes(Charset.forName("UTF-8"));
     }
 
 
@@ -275,9 +282,10 @@ public class ImpressaoBO {
                                                         String nomeOfendido,
                                                         String autoridadePM,
                                                         String nomeMunicipio,
+                                                        String tipoManifestacao,
                                                         String enderecoForum,
-                                                        String dataMarcada,
-                                                        String tipoManifestacao) {
+                                                        String dataMarcada
+                                                        ) {
         String retorno = null;
         StringBuilder messageString1 = new StringBuilder();
         messageString1.append(logoSSP);
@@ -384,7 +392,7 @@ public class ImpressaoBO {
     public static byte[] obterRegua() {
         String retorno = null;
         StringBuilder messageString1 = new StringBuilder();
-        messageString1.append("^XA^MNN^JUS^FO10, 10^A0,N,6,6^FDXY10");
+        messageString1.append(logoSSP);
    /*     messageString1.append("^FO10, 20^A0,N,6,6^FDY20");
         messageString1.append("^FO10, 30^A0,N,6,6^FDY30");
         messageString1.append("^FO10, 40^A0,N,6,6^FDY40");
